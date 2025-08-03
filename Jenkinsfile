@@ -2,7 +2,16 @@ node {
     stage('Clone repository') {
         checkout scm
     }
-
+    stage('Docker Login') {
+        // Log into Docker Hub using Jenkins credentials
+        withCredentials([usernamePassword(
+            credentialsId: 'docker-hub', 
+            usernameVariable: 'DOCKERHUB_USER', 
+            passwordVariable: 'DOCKERHUB_PASS'
+        )]) {
+            sh 'echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin'
+        }
+    }
     stage('Build and Push ARM64 Image') {
         // Register QEMU emulation (safe to do every time)
         sh 'docker run --rm --privileged multiarch/qemu-user-static --reset -p yes'
