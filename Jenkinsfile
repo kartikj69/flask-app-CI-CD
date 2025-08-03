@@ -7,7 +7,7 @@ node {
 
     stage('Build image') {
         // Build for linux/amd64 platform to ensure compatibility with Kubernetes
-        app = docker.build("kartikj69/test:${env.BUILD_NUMBER}", "--platform linux/amd64 .")
+        app = docker.build("kartikj69/test:${env.BUILD_NUMBER}", "--platform linux/arm64 .")
     }
 
     stage('Test image') {
